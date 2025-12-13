@@ -1,0 +1,111 @@
+package org.springcore.demo.model;
+
+import java.util.Arrays;
+
+public class Library {
+
+	private String libraryName;
+	private Book[] book;
+	
+	public Library() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public String getLibraryName() {
+		return libraryName;
+	}
+
+	public void setLibraryName(String libraryName) {
+		this.libraryName = libraryName;
+	}
+
+	public Book[] getBook() {
+		return book;
+	}
+
+	public void setBook(Book[] book) {
+		this.book = book;
+	}
+
+	@Override
+	public String toString() {
+		return "Library [libraryName=" + libraryName + ", book=" + Arrays.toString(book) + "]";
+	}
+
+	public Library(String libraryName, Book[] book) {
+		super();
+		this.libraryName = libraryName;
+		this.book = book;
+	}
+
+
+	
+	
+}
+
+
+------------------------
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:context="http://www.springframework.org/schema/context"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+<bean id="book" class="org.springcore.demo.model.Book">
+<property name="isbn" value="50"></property>
+<property name="name" value="My Career"></property>
+<property name="volumes">
+<array>
+<value> at wipro</value>
+<value> when i quit the job</value>
+<value> when i started my youtube</value>
+
+</array>
+
+</property>
+
+</bean>
+
+
+
+<bean id="book2" class="org.springcore.demo.model.Book">
+<property name="isbn" value="55"></property>
+<property name="name" value="My Career"></property>
+<property name="volumes">
+<array>
+<value> at wipro</value>
+<value> when i quit the job</value>
+<value> when i started my youtube</value>
+
+</array>
+
+</property>
+
+</bean>
+
+
+
+
+<bean id="library" class="org.springcore.demo.model.Library">
+<property name="libraryName" value="City Central Library"></property>
+
+<property name="book">
+
+ <array>
+ <ref bean="book"/> 
+ <ref bean="book2"/> 
+ </array>
+ 
+
+</property>
+
+</bean>
+
+
+
+</beans>
+
