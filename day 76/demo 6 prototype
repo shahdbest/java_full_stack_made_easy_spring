@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:context="http://www.springframework.org/schema/context"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+<bean id="book3" class="org.springcore.demo.model.Book">
+<property name="isbn" value="50"></property>
+<property name="name" value="My Career"></property>
+</bean>
+
+
+<bean id="book" class="org.springcore.demo.model.Book">
+<property name="isbn" value="100"></property>
+<property name="name" value="My LIFE"></property>
+</bean>
+
+<!-- 
+autoiwire default = no autowiring 
+autowire byType= injects the bean based on the type of the bean - requires single matching bean - injects bean through setter
+autowire constructor= same as bytype but no exception will be thrown if multiple matching beans are availabe , 
+autowire byName= injects the bean based on the property name
+
+-->
+
+
+
+
+<bean id="library" class="org.springcore.demo.model.Library" autowire="byName" scope="prototype">
+<property name="libraryName" value="City Central Library"></property>
+</bean>
+
+
+
+</beans>
+
