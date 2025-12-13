@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:context="http://www.springframework.org/schema/context"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+<bean id="book" class="org.springcore.demo.model.Book">
+<property name="isbn" value="50"></property>
+<property name="name" value="My Career"></property>
+</bean>
+
+
+<bean id="book2" class="org.springcore.demo.model.Book">
+<property name="isbn" value="50"></property>
+<property name="name" value="My Career"></property>
+</bean>
+
+<!-- 
+autoiwire default = no autowiring 
+autowire byType= injects the bean based on the type of the bean - requires single matching bean - injects bean through setter
+autowire constructor= same as bytype but no exception will be thrown if multiple matching beans are availabe , 
+
+-->
+
+
+
+
+<bean id="library" class="org.springcore.demo.model.Library" autowire="constructor">
+<property name="libraryName" value="City Central Library"></property>
+</bean>
+
+
+
+</beans>
+
+
+
+----------------------library
+
+
+  package org.springcore.demo.model;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class Library {
+
+	private String libraryName;
+	private Book book;
+	public String getLibraryName() {
+		return libraryName;
+	}
+	public void setLibraryName(String libraryName) {
+		this.libraryName = libraryName;
+	}
+	public Book getBook() {
+		return book;
+	}
+	public void setBook(Book book) {
+		this.book = book;
+	}
+	
+	public Library() {
+		// TODO Auto-generated constructor stub
+	}
+	public Library(String libraryName, Book book) {
+		super();
+		this.libraryName = libraryName;
+		this.book = book;
+	}
+	
+	
+	public Library(Book book) {
+		super();
+		this.book = book;
+	}
+	
+	@Override
+	public String toString() {
+		return "Library [libraryName=" + libraryName + ", book=" + book + "]";
+	}
+	
+	
+	
+}
+
+  
