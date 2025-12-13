@@ -1,0 +1,152 @@
+
+package org.springcore.demo.model;
+
+import java.util.Arrays;
+
+public class Book {
+
+	private int isbn;
+	private String name;
+	private String[] volumes;
+
+	
+	public String[] getVolumes() {
+		return volumes;
+	}
+
+
+	public void setVolumes(String[] volumes) {
+		this.volumes = volumes;
+	}
+
+
+	public Book() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public int getIsbn() {
+		return isbn;
+	}
+
+
+	public void setIsbn(int isbn) {
+		System.out.println("set isbn called= SETTER INJECTION");
+		this.isbn = isbn;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public Book(int isbn, String name, String[] volumes) {
+		super();
+		this.isbn = isbn;
+		this.name = name;
+		this.volumes = volumes;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Book( String name, int isbn) {
+		super();
+
+		System.out.println("const String , int");
+		this.isbn = isbn;
+		this.name = name;
+	}
+
+	public Book(int isbn, String name) {
+		super();
+
+		System.out.println("const int , string");
+		this.isbn = isbn;
+		this.name = name;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Book [isbn=" + isbn + ", name=" + name + ", volumes=" + Arrays.toString(volumes) + "]";
+	}
+
+	
+	
+	
+
+	
+	
+	
+}
+
+---------------service
+
+
+  package org.springcore.demo.service;
+
+import org.springcore.demo.model.Book;
+import org.springcore.demo.model.Library;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class BookService {
+
+	public static void main(String[] args) {
+			
+
+		BeanFactory factory=new ClassPathXmlApplicationContext("spring.xml");
+		Library library= factory.getBean(Library.class);
+		
+		System.out.println(library);
+	}
+
+}
+
+
+
+
+---------------
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:context="http://www.springframework.org/schema/context"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+<bean id="book" class="org.springcore.demo.model.Book">
+<property name="isbn" value="50"></property>
+<property name="name" value="My Career"></property>
+<property name="volumes">
+<array>
+<value> at wipro</value>
+<value> when i quit the job</value>
+<value> when i started my youtube</value>
+
+</array>
+
+</property>
+
+</bean>
+
+
+<bean id="library" class="org.springcore.demo.model.Library">
+<property name="libraryName" value="City Central Library"></property>
+
+<property name="book" ref="book"> </property>
+
+</bean>
+
+
+
+</beans>
+
+
+
+  
