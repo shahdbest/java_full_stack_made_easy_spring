@@ -1,0 +1,112 @@
+-----------Book
+
+  package org.springcore.demo.model;
+
+import java.util.Arrays;
+
+public class Book {
+
+	private int isbn;
+	private String name;
+	
+	
+
+	public Book() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+	public int getIsbn() {
+		return isbn;
+	}
+
+
+
+	public void setIsbn(int isbn) {
+		System.out.println("setter");
+		this.isbn = isbn;
+	}
+
+
+
+	public String getName() {
+		return name;
+	}
+
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+
+	public Book(int isbn, String name) {
+		super();
+		System.out.println("const");
+		this.isbn = isbn;
+		this.name = name;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Book [isbn=" + isbn + ", name=" + name + "]";
+	}
+	
+	
+	
+	
+	
+}
+
+
+---------  service
+  
+
+package org.springcore.demo.service;
+
+import org.springcore.demo.config.MyAppConfig;
+import org.springcore.demo.model.Book;
+import org.springcore.demo.model.Library;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class BookService {
+
+	public static void main(String[] args) {
+			
+
+		BeanFactory factory=new AnnotationConfigApplicationContext(MyAppConfig.class);
+		Book book=factory.getBean(Book.class);
+		
+		System.out.println(book);
+		
+	}
+
+}
+
+
+-----------------config
+
+  package org.springcore.demo.config;
+
+import org.springcore.demo.model.Book;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class MyAppConfig {
+
+	@Bean
+	public Book getBook() {
+		return new Book(10, "My First WorldCup");
+	}
+}
+
+
+
+
