@@ -1,0 +1,73 @@
+package org.springcore.demo.config;
+
+import org.springcore.demo.model.Book;
+import org.springcore.demo.model.Library;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
+@Configuration
+public class MyAppConfig {
+
+	@Bean(name="mybook")
+	public Book getBook() {
+		return new Book(10, "My First WorldCup");
+	}
+	
+	@Bean(name="mybook1")
+	public Book getBook1() {
+		return new Book(100, "My Last WorldCup");
+	}
+	
+	
+	//@Scope("singleton")
+	@Scope("prototype")
+	@Bean(name="library")
+	public Library getLibrary() {
+		
+		Library library=new Library();
+		library.setLibraryName("Central");
+		return library; 
+	}
+	
+	
+	
+}
+
+
+-----------------------------------------service 
+
+
+package org.springcore.demo.service;
+
+import org.springcore.demo.config.MyAppConfig;
+import org.springcore.demo.model.Book;
+import org.springcore.demo.model.Library;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class BookService {
+
+	public static void main(String[] args) {
+			
+
+		BeanFactory factory=new AnnotationConfigApplicationContext(MyAppConfig.class);
+		
+		Library library= factory.getBean(Library.class); 
+		
+		System.out.println(library);
+		
+		Library library1= factory.getBean(Library.class); 
+		System.out.println(library1);
+		
+		
+		library.setLibraryName("SOMETHING NEW");
+		
+		System.out.println(library);
+		System.out.println(library1);
+	}
+
+}
+
+  
