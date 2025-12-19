@@ -1,0 +1,114 @@
+package org.springcore.demo.model;
+
+import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
+public class Book {
+
+	
+	@Value("99")
+	private int isbn;
+	@Value("NEW NAME")
+	private String name;
+	
+	
+
+	public Book() {
+	
+	}
+
+
+
+	public int getIsbn() {
+		return isbn;
+	}
+
+
+
+	public void setIsbn(int isbn) {
+		System.out.println("setter");
+		this.isbn = isbn;
+	}
+
+
+
+	public String getName() {
+		return name;
+	}
+
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+
+	public Book(int isbn, String name) {
+		super();
+		System.out.println("const");
+		this.isbn = isbn;
+		this.name = name;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Book [isbn=" + isbn + ", name=" + name + "]";
+	}
+	
+	
+	
+	
+	
+}
+
+
+--------------config
+package org.springcore.demo.config;
+
+import org.springcore.demo.model.Book;
+import org.springcore.demo.model.Library;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
+@Configuration
+@ComponentScan("org.springcore.demo.model")
+public class MyAppConfig {
+	
+	
+}
+
+
+-------------------------------service
+
+  package org.springcore.demo.service;
+
+import org.springcore.demo.config.MyAppConfig;
+import org.springcore.demo.model.Book;
+import org.springcore.demo.model.Library;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class BookService {
+
+	public static void main(String[] args) {
+			
+
+		AnnotationConfigApplicationContext factory=new AnnotationConfigApplicationContext(MyAppConfig.class);
+		
+		Book book= factory.getBean(Book.class);
+		System.out.println(book);
+	}
+
+}
+
+  
+
