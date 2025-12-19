@@ -1,0 +1,124 @@
+package org.springcore.demo.model;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+//Annotation Based: put annotation on classes to tell spring what to manage
+//@component //@service //Repository // Controller 
+
+//java based : use java class insted of xml to define beans manually 
+//@configuration @Bean  
+
+public class Library {
+
+	private String libraryName;
+	
+	@Qualifier("mybook")
+	@Autowired
+	private Book book;
+	
+	public String getLibraryName() {
+		return libraryName;
+	}
+	public void setLibraryName(String libraryName) {
+		this.libraryName = libraryName;
+	}
+	public Book getBook() {
+		return book;
+	}
+	public void setBook(Book book) {
+		this.book = book;
+	}
+	
+	public Library() {
+		// TODO Auto-generated constructor stub
+	}
+	public Library(String libraryName, Book book) {
+		super();
+		this.libraryName = libraryName;
+		this.book = book;
+	}
+	
+	
+	public Library(Book book) {
+		super();
+		this.book = book;
+	}
+	
+	@Override
+	public String toString() {
+		return "Library [libraryName=" + libraryName + ", book=" + book + "]";
+	}
+	
+	
+	
+}
+
+
+-------------------- service
+package org.springcore.demo.service;
+
+import org.springcore.demo.config.MyAppConfig;
+import org.springcore.demo.model.Book;
+import org.springcore.demo.model.Library;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class BookService {
+
+	public static void main(String[] args) {
+			
+
+		BeanFactory factory=new AnnotationConfigApplicationContext(MyAppConfig.class);
+		
+		Library library= factory.getBean(Library.class); 
+		
+		System.out.println(library);
+		
+	}
+
+}
+
+  
+---------------------------------------config
+
+
+
+  package org.springcore.demo.config;
+
+import org.springcore.demo.model.Book;
+import org.springcore.demo.model.Library;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class MyAppConfig {
+
+	@Bean(name="mybook")
+	public Book getBook() {
+		return new Book(10, "My First WorldCup");
+	}
+	
+	@Bean(name="mybook1")
+	public Book getBook1() {
+		return new Book(100, "My Last WorldCup");
+	}
+	
+	
+	@Bean(name="library")
+	public Library getLibrary() {
+		
+		Library library=new Library();
+		library.setLibraryName("Central");
+		return library; 
+	}
+	
+	
+	
+}
+
+
