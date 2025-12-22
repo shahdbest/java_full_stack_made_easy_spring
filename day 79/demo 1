@@ -1,0 +1,72 @@
+
+STEPS --- 
+
+
+  go to 
+  https://start.spring.io/
+
+
+select project type as maven 
+  language as java 
+  group  as com.example
+  Artifact as rest-api
+  package as com.example.restapi
+
+  under the dependencies section choose WEB
+
+  and download the project 
+
+  now extract the downloaded zip file and open eclipse 
+  in eclipse go to file import - maven - existing maven project choose the extracted project ..create a new class under the same base package as MyController and run the application as java application
+
+
+  open postman and test the application http://localhost:8080 (if you hvae not changed the port number if changed use the changed port number)
+
+---------main----------
+
+  package com.example.restapi;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class RestApiApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(RestApiApplication.class, args);
+	}
+
+}
+
+
+----------------controller 
+package com.example.restapi.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class MyController {
+
+	
+	@GetMapping
+	public String getData()
+	{
+		return "My First Rest API get method";
+	}
+	
+	
+	@PostMapping
+	public String postData()
+	{
+		return "My First Rest API post method";
+	}
+}
+
+
+--------------------application.properties
+
+  spring.application.name=rest-api
+server.port=1111
+
