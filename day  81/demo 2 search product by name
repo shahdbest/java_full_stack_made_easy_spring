@@ -1,0 +1,54 @@
+package com.example.crud.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.crud.model.Product;
+
+@RestController
+@RequestMapping("products")
+public class ProductController {
+
+	List<Product> products=new ArrayList<Product>();
+	
+	ProductController()
+	{
+		products.add(new Product(1, 100, "pen", 2));
+		products.add(new Product(2, 200, "book", 1));
+		products.add(new Product(3, 20, "pencil", 1));
+		products.add(new Product(4,	30, "eraser", 2));
+	}
+	
+	//http://localhost:8080/products
+	@GetMapping
+	public ResponseEntity<List<Product>> getProducts()
+	{
+		return new ResponseEntity<List<Product>>(products,HttpStatus.FOUND);
+	}
+	
+//search product by name	
+	//http://localhost:8080/products/pen
+	@GetMapping("{productName}")
+	public ResponseEntity<Product> getProduct(@PathVariable String productName)
+	{
+		
+		for(Product p:products) {
+			
+			if(p.getName().equalsIgnoreCase(productName))
+				return new ResponseEntity<Product>(p,HttpStatus.FOUND);;
+		}
+		
+		return new ResponseEntity<Product>(new Product(),HttpStatus.NOT_FOUND);
+	
+	}
+
+	
+	
+}
