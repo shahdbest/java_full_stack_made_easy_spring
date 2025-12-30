@@ -1,0 +1,295 @@
+-------SQL
+create database superherosDB;
+use superherosDB;
+
+select * from super_heros;
+
+------------------------------
+
+-----application properties
+
+  spring.application.name=spring-data-jpa-IS
+
+
+spring.datasource.url=jdbc:mysql://localhost:3306/superherosDB
+spring.datasource.username=root
+spring.datasource.password=root1234
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+spring.jpa.hibernate.ddl-auto=update
+
+-----------------------------Entity
+
+  package com.example.superheros.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+
+@Entity
+public class SuperHeros {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String name;
+	private String power;
+	private String universe;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPower() {
+		return power;
+	}
+	public void setPower(String power) {
+		this.power = power;
+	}
+	public String getUniverse() {
+		return universe;
+	}
+	public void setUniverse(String universe) {
+		this.universe = universe;
+	}
+
+	
+	
+}
+
+------------------------------------repository 
+
+
+package com.example.superheros.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.superheros.entity.SuperHeros;
+
+
+public interface SuperherosRepository extends JpaRepository<SuperHeros, Long>{
+
+}
+
+
+------------------------DTO --request
+
+
+  package com.example.superheros.dto;
+
+public class SuperHeroRequest {
+
+	String name;
+	String power;
+	String universe;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPower() {
+		return power;
+	}
+	public void setPower(String power) {
+		this.power = power;
+	}
+	public String getUniverse() {
+		return universe;
+	}
+	public void setUniverse(String universe) {
+		this.universe = universe;
+	}
+
+	public SuperHeroRequest() {
+		// TODO Auto-generated constructor stub
+	}
+	public SuperHeroRequest(String name, String power, String universe) {
+		super();
+		this.name = name;
+		this.power = power;
+		this.universe = universe;
+	}
+	
+
+}
+
+
+--------------------------DTO --response
+
+package com.example.superheros.dto;
+
+public class SuperheroResponse {
+
+	String name;
+	String power;
+	String universe;
+	Long id;
+	public SuperheroResponse() {
+		// TODO Auto-generated constructor stub
+	}
+	public SuperheroResponse(String name, String power, String universe, Long id) {
+		super();
+		this.name = name;
+		this.power = power;
+		this.universe = universe;
+		this.id = id;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPower() {
+		return power;
+	}
+	public void setPower(String power) {
+		this.power = power;
+	}
+	public String getUniverse() {
+		return universe;
+	}
+	public void setUniverse(String universe) {
+		this.universe = universe;
+	}
+
+
+}
+
+
+----------------------------service 
+
+  package com.example.superheros.service;
+
+import com.example.superheros.dto.SuperHeroRequest;
+import com.example.superheros.dto.SuperheroResponse;
+
+public interface SuperherosService {
+
+	SuperheroResponse createHero(SuperHeroRequest heroRequest);
+}
+
+------------------------------service impl 
+
+  package com.example.superheros.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.superheros.dto.SuperHeroRequest;
+import com.example.superheros.dto.SuperheroResponse;
+import com.example.superheros.entity.SuperHeros;
+import com.example.superheros.repository.SuperherosRepository;
+
+@Service
+public class SuperherosImpl implements SuperherosService{
+
+	final SuperherosRepository repository;
+	
+	public SuperherosImpl(SuperherosRepository repository) {
+		super();
+		this.repository = repository;
+	}
+
+	public int genId()
+	{
+		//some business logic here
+		return 0;
+	}
+
+
+	@Override
+	public SuperheroResponse createHero(SuperHeroRequest heroRequest) {
+		
+		SuperHeros hero=new SuperHeros();
+		
+		hero.setName(heroRequest.getName());
+		hero.setPower(heroRequest.getPower());
+		hero.setUniverse(heroRequest.getUniverse());
+		
+		SuperHeros savedHero=repository.save(hero);;
+		
+		SuperheroResponse response=new SuperheroResponse(savedHero.getName(), savedHero.getPower(), savedHero.getUniverse(), savedHero.getId());
+		return response;
+	}
+}
+
+-----------------controller
+
+
+  package com.example.superheros.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.superheros.dto.SuperHeroRequest;
+import com.example.superheros.dto.SuperheroResponse;
+import com.example.superheros.service.SuperherosService;
+
+@RestController
+@RequestMapping("/superheros")
+public class SuperherosController {
+
+	private final SuperherosService service;
+	
+	
+	
+	public SuperherosController(SuperherosService service) {
+		super();
+		this.service = service;
+	}
+
+
+
+	@PostMapping
+	public ResponseEntity<SuperheroResponse> create(@RequestBody SuperHeroRequest request){
+
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.createHero(request));
+		
+	}
+}
+
+
+-------------postman 
+
+  post -- > http://localhost:8080/superheros
+reuqestBody 
+
+
+          {
+            
+            "name": "virat",
+            "power": "bat",
+            "universe":"marvel"
+        }
+
+
+
+
+  
+  
+
+
+  
